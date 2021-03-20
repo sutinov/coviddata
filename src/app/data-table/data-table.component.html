@@ -1,6 +1,5 @@
 <div class="mat-elevation-z8 data-table">
-  <mat-table
-    fxLayout="row"
+  <table
     mat-table
     multiTemplateDataRows
     class="full-width-table"
@@ -38,13 +37,13 @@
     </ng-container>
 
     <!-- Id Column -->
-    <ng-container matColumnDef="recovered">
+    <ng-container class="recovered" matColumnDef="recovered">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Recovered</th>
       <td mat-cell *matCellDef="let row">{{ row.recovered }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </mat-table>
+  </table>
 
   <mat-paginator
     #paginator

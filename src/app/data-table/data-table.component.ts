@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -38,19 +44,14 @@ export class DataTableComponent implements AfterViewInit {
   filter: sortData = new sortData();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = [
-    'country',
-    'cases',
-    'todayCases',
-    'todayDeaths',
-    'active',
-    'recovered',
-  ];
-
+  displayedColumns = [];
+  scrWidth: any;
   constructor(public appService: AppService) {}
   ngOnInit() {
     this.dataSource = new DataTableDataSource(this.appService);
     this.sortData(false);
+    this.setupTable();
+    this.getScreenSize();
   }
   sortData(isChange: boolean) {
     if (isChange) {
@@ -75,5 +76,39 @@ export class DataTableComponent implements AfterViewInit {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(tap(() => this.sortData(true)))
       .subscribe();
+  }
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    this.scrWidth = window.innerWidth;
+    console.log(this.scrWidth);
+  }
+
+  setupTable() {
+    // this.displayedColumns = [
+    //   'country',
+    //   'cases',
+    //   'todayCases',
+    //   'todayDeaths',
+    //   'active',
+    //   'recovered',
+    // ];
+    if (this.scrWidth >= 600) {
+      this.displayedColumns = [
+        'country',
+        'cases',
+        'todayCases',
+        'todayDeaths',
+        'active',
+        'recovered',
+      ];
+    } else {
+      this.displayedColumns = [
+        'country',
+        'cases',
+        'todayCases',
+        'todayDeaths',
+        'active',
+      ];
+    }
   }
 }
