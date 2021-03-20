@@ -1,6 +1,8 @@
 <div class="mat-elevation-z8 data-table">
-  <table
+  <mat-table
+    fxLayout="row"
     mat-table
+    multiTemplateDataRows
     class="full-width-table"
     matSort
     matSortActive="firstName"
@@ -42,7 +44,7 @@
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+  </mat-table>
 
   <mat-paginator
     #paginator

@@ -5,3 +5,17 @@
   width: 90%;
   margin: 20px auto;
 }
+@media only screen and (max-width: 600px) {
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding-left: 4px;
+  }
+  mat-header-row,
+  mat-row {
+    word-break: break-all;
+  }
+  .data-table {
+    width: 100%;
+  }
+}

@@ -7,11 +7,28 @@ import { tap } from 'rxjs/operators';
 import { Countries, sortData } from '../app.model';
 import { AppService } from '../app.service';
 import { DataTableDataSource } from './data-table-datasource';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
 })
 export class DataTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -35,7 +35,7 @@ body {
   position: relative;
   width: 300px;
   height: 400px;
-  margin: calc((100vh - 400px) / 2) auto;
+  margin: 3% auto;
 }
 
 .card#card-visitors input[type="checkbox"]#card-visitors-indicator {
@@ -536,4 +536,10 @@ body {
 
 .header2 ::ng-deep {
   background-color: #00917c !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .card-wrapper {
+    display: grid;
+  }
 }
