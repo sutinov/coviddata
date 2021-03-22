@@ -7,6 +7,8 @@ import { ApiResponse, Countries, sortData } from '../app.model';
 import { AppService } from '../app.service';
 
 export class DataTableDataSource extends DataSource<Countries> {
+  private allData = new BehaviorSubject<Countries[]>([]);
+
   public dataSubject = new BehaviorSubject<Countries[]>([]);
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -23,6 +25,16 @@ export class DataTableDataSource extends DataSource<Countries> {
     super();
   }
 
+  loadFilteredData(filter: sortData) {
+    this.allData.subscribe((data) => {
+      const filteredData = data.slice(
+        (filter.pageNumber - 1) * filter.pageSize,
+        filter.pageNumber * filter.pageSize
+      );
+      this.dataSubject.next(filteredData);
+    });
+  }
+
   loadData(filter: sortData) {
     this.appService
       .getData(filter)
@@ -30,26 +42,18 @@ export class DataTableDataSource extends DataSource<Countries> {
       .subscribe((data: any) => {
         // console.log(data.response);
         if (data) {
-          this.totalDataCountSubject.next(data.totalCount$);
-          this.dataSubject.next(data);
-          // console.log(data);
+          this.totalDataCountSubject.next(data.length);
+          this.allData.next(data);
+          this.loadFilteredData(filter);
+          console.log(data.length);
         }
       });
   }
 
-  /**
-   * Connect this data source to the table. The table will only update when
-   * the returned stream emits new items.
-   * @returns A stream of the items to be rendered.
-   */
   connect(): Observable<Countries[]> {
     return this.dataSubject.asObservable();
   }
 
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
   disconnect(): void {
     this.dataSubject.complete();
     this.totalDataCountSubject.complete();

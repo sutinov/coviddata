@@ -511,8 +511,8 @@ body {
 .card#card-visitors .info .counter {
   margin-top: 8px;
   color: #212121;
-  font-size: 40px;
-  font-weight: 400;
+  font-size: 2rem;
+  font-weight: bold;
   line-height: 40px;
 }
 

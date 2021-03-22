@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { merge } from 'rxjs';
@@ -37,9 +37,10 @@ import {
   ],
 })
 export class DataTableComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Countries>;
+  @ViewChild('paginator', { read: MatPaginator }) paginatorlist: MatPaginator;
   dataSource: DataTableDataSource;
   filter: sortData = new sortData();
 
@@ -48,67 +49,37 @@ export class DataTableComponent implements AfterViewInit {
   scrWidth: any;
   constructor(public appService: AppService) {}
   ngOnInit() {
+    this.filter.pageNumber = 1;
+    this.filter.pageSize = 15;
     this.dataSource = new DataTableDataSource(this.appService);
-    this.sortData(false);
+    this.dataSource.loadData(this.filter);
     this.setupTable();
     this.getScreenSize();
   }
-  sortData(isChange: boolean) {
-    if (isChange) {
-      this.filter.pageSize = this.paginator.pageSize;
-      this.filter.pageNumber = this.paginator.pageIndex + 1;
-      this.filter.sortColumn = this.sort.active;
-      this.filter.sortDirection = this.sort.direction;
-      console.log(this.filter);
-    } else {
-      this.filter.pageSize = 10;
-      this.filter.pageNumber = 1;
-      this.filter.sortColumn = 'firstName';
-      this.filter.sortDirection = 'asc';
-      console.log(this.filter);
-    }
-    this.dataSource.loadData(this.filter);
+
+  pageChanged(event: PageEvent) {
+    this.filter.pageSize = event.pageSize;
+    this.filter.pageNumber = event.pageIndex + 1;
+    this.dataSource.loadFilteredData(this.filter);
   }
 
   ngAfterViewInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.sortData(true)))
-      .subscribe();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     this.scrWidth = window.innerWidth;
-    console.log(this.scrWidth);
+    // console.log(this.scrWidth);
   }
 
   setupTable() {
-    // this.displayedColumns = [
-    //   'country',
-    //   'cases',
-    //   'todayCases',
-    //   'todayDeaths',
-    //   'active',
-    //   'recovered',
-    // ];
-    if (this.scrWidth >= 600) {
-      this.displayedColumns = [
-        'country',
-        'cases',
-        'todayCases',
-        'todayDeaths',
-        'active',
-        'recovered',
-      ];
-    } else {
-      this.displayedColumns = [
-        'country',
-        'cases',
-        'todayCases',
-        'todayDeaths',
-        'active',
-      ];
-    }
+    this.displayedColumns = [
+      'country',
+      'cases',
+      'active',
+      'todayDeaths',
+      'recovered',
+    ];
   }
 }

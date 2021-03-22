@@ -15,6 +15,7 @@ export class sortData {
   constructor(
     public pageSize?: number,
     public pageNumber?: number,
+    public pageIndex?: number,
     public sortColumn?: string,
     public sortDirection?: string,
     public todayCases?: boolean

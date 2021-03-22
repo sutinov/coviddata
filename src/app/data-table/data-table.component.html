@@ -4,7 +4,7 @@
     multiTemplateDataRows
     class="full-width-table"
     matSort
-    matSortActive="firstName"
+    matSortActive="todayCases"
     matSortDirection="asc"
     aria-label="Elements"
     [dataSource]="dataSource"
@@ -48,8 +48,9 @@
   <mat-paginator
     #paginator
     [length]="dataSource.totalDataCount$ | async"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="filter.pageSize"
+    [pageSizeOptions]="[10, 15, 20]"
+    (page)="pageChanged($event)"
   >
   </mat-paginator>
 </div>
