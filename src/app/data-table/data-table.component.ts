@@ -78,6 +78,7 @@ export class DataTableComponent implements AfterViewInit {
       'country',
       'cases',
       'active',
+      'todayCases',
       'todayDeaths',
       'recovered',
     ];
