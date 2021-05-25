@@ -4,6 +4,7 @@
   z-index: 0;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 html {
@@ -517,6 +518,9 @@ body {
 
 .card#card-visitors .info .counter .unit {
   font-size: 15px;
+}
+.info {
+  display: inline-table;
 }
 
 .card img {
