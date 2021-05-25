@@ -4,7 +4,6 @@
   z-index: 0;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 html {
@@ -511,7 +510,7 @@ body {
 .card#card-visitors .info .counter {
   margin-top: 8px;
   color: #212121;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   line-height: 40px;
 }

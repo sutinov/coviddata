@@ -23,13 +23,13 @@ export class CardsComponent implements OnInit {
     filter.country = '';
     this.appService.getDataMk().subscribe((result: any) => {
       this.data = result;
-      // console.log(result);
+      console.log(result[0].recovered);
     });
   }
   getGlobalInfo() {
     this.appService.getGlobalData().subscribe((result: any) => {
       this.global = result.result;
-      // console.log(result.result);
+      console.log(result.result);
     });
   }
 }
